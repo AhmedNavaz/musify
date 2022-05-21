@@ -63,7 +63,7 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     return ThemeData(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: GoogleFonts.openSans().fontFamily,
       primaryColor: lightBackgroundColor,
       backgroundColor: darkBackgroundColor,
       scaffoldBackgroundColor: darkBackgroundColor,
