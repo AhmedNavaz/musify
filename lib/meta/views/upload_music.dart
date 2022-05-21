@@ -16,7 +16,7 @@ class _UploadMusicState extends State<UploadMusic> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          "Add Playlist",
+          "Upload Music",
           style: TextStyle(
               color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),

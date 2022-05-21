@@ -4,6 +4,7 @@ import 'package:musify/meta/views/authentication/signin.dart';
 import 'package:musify/meta/views/authentication/signup.dart';
 import 'package:musify/meta/views/bottom_navigation/add/add_playlist.dart';
 import 'package:musify/meta/views/bottom_navigation/body.dart';
+import 'package:musify/meta/views/comment_screen.dart';
 import 'package:musify/meta/views/edit_profile.dart';
 import 'package:musify/meta/views/media_player.dart';
 import 'package:musify/meta/views/profile_screen.dart';
@@ -26,6 +27,7 @@ class RouteGenerator {
   static const String editProfile = '/edit-profile';
   static const String addPlaylist = '/add-playlist';
   static const String uploadMusic = '/upload-music';
+  static const String commentScreen = '/comment-screen';
   static const String forgotPasswordScreen = '/forgot-password-screen';
   static const String enterPhoneNumberScreen = '/enter-phone-number-screen';
   static const String createNewPassword = '/create-new-password-screen';
@@ -70,6 +72,9 @@ class RouteGenerator {
 
       case uploadMusic:
         return _getPageRoute(const UploadMusic());
+
+      case commentScreen:
+        return _getPageRoute(const CommentsScreen());
 
       default:
         return _errorRoute();

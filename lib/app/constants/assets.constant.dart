@@ -11,5 +11,5 @@ class Assets {
   static const String other = "$ICON_PATH/other.png";
 
   // TODO :: IMAGES
-  static const String authBackground = "$IMAGES_PATH/bg_img.png";
+  static const String upload = "$IMAGES_PATH/upload.png";
 }

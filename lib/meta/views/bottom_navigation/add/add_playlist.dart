@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:musify/app/constants/assets.constant.dart';
+import 'package:musify/meta/utils/image_handler.dart';
 
 class AddPlaylist extends StatefulWidget {
   const AddPlaylist({Key? key}) : super(key: key);
@@ -9,7 +13,17 @@ class AddPlaylist extends StatefulWidget {
 }
 
 class _AddPlaylistState extends State<AddPlaylist> {
+  Future<File>? uploadImage() async {
+    final picker = ImagePicker();
+    final imageFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 600,
+    );
+    return imageFile == null ? File('') : File(imageFile.path);
+  }
+
   @override
+  File? coverImage;
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black12,
@@ -25,8 +39,29 @@ class _AddPlaylistState extends State<AddPlaylist> {
       body: SingleChildScrollView(
         child: Column(children: [
           InkWell(
-            child: Image.asset(Assets.splashLogo),
-            onTap: () => print("Upload Function Called."),
+            child: coverImage == null
+                ? Image.asset(
+                    Assets.upload,
+                    width: 250,
+                    height: 250,
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Image.file(
+                      coverImage!,
+                      width: 250,
+                      height: 250,
+                    ),
+                  ),
+            onTap: () {
+              ImageHandler.uploadPicture()!.then((value) {
+                value.path == ''
+                    ? null
+                    : setState(() {
+                        coverImage = value;
+                      });
+              });
+            },
           ),
           TextField(
             decoration: InputDecoration(
