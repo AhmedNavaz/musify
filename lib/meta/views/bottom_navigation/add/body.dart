@@ -1,13 +1,27 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/core/model/playlist.model.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
+import 'package:provider/provider.dart';
 
-class AddView extends StatelessWidget {
+class AddView extends StatefulWidget {
   AddView({Key? key}) : super(key: key);
 
+  @override
+  State<AddView> createState() => _AddViewState();
+}
+
+class _AddViewState extends State<AddView> {
   bool isSelected = false;
+  int selectedIndex = -1;
+
+  PlaylistsModel? selected;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +51,13 @@ class AddView extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       navigationController
-                          .navigateToNamed(RouteGenerator.uploadMusic);
+                          .navigateToNamedWithArg(RouteGenerator.uploadMusic, {
+                        "fromPlaylist": true,
+                        "desc": selected?.description ?? "",
+                        "playlistName": selected?.name ?? "",
+                        "playlistFile": File(""),
+                        "playlistId": selected?.playlistId ?? "",
+                      });
                     },
                     child: Text(
                       "Next",
@@ -51,45 +71,76 @@ class AddView extends StatelessWidget {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 10),
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: Image.asset(
-                                  Assets.splashLogo,
-                                  width: 90,
-                                  height: 90,
-                                ),
-                              ),
-                              Text(
-                                "Playlist",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(color: AppTheme.primaryColor),
-                              ),
-                            ],
-                          ),
-                        ),
+                child: Consumer<AuthProviderNotifier>(
+                    builder: (ctx, notifier, child) {
+                  if (notifier.currentUser.uploads?.playlists == null) {
+                    return Center(
+                      child: Text(
+                        "No Playlist Found",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(color: AppTheme.whiteColor),
                       ),
                     );
-                  },
-                ),
+                  } else {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 0,
+                              childAspectRatio: 1 / 1.5,
+                              mainAxisSpacing: 0),
+                      itemCount:
+                          notifier.currentUser.uploads?.playlists?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = index;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: selectedIndex == index
+                                  ? AppTheme.primaryColor
+                                  : null,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: Image.asset(
+                                      Assets.splashLogo,
+                                      width: 90,
+                                      height: 90,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 0.02.sh,
+                                  ),
+                                  Text(
+                                    "Playlist",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                            color: selectedIndex == index
+                                                ? Colors.black
+                                                : AppTheme.primaryColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                }),
               ),
             ],
           ),

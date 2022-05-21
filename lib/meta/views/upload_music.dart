@@ -1,14 +1,34 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:musify/app/constants/assets.constant.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
+import 'package:provider/provider.dart';
 
 class UploadMusic extends StatefulWidget {
-  const UploadMusic({Key? key}) : super(key: key);
+  String playlistName, playlistDescription;
+  bool isFromPlaylist;
+  File? playlistFile;
+  String? playlistId;
+
+  UploadMusic(
+      {Key? key,
+      required this.isFromPlaylist,
+      required this.playlistName,
+      required this.playlistDescription,
+      this.playlistFile,
+      this.playlistId})
+      : super(key: key);
 
   @override
   State<UploadMusic> createState() => _UploadMusicState();
 }
 
 class _UploadMusicState extends State<UploadMusic> {
+  final title = TextEditingController();
+  final genre = TextEditingController();
+  final desc = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +56,19 @@ class _UploadMusicState extends State<UploadMusic> {
       body: Column(children: [
         InkWell(
           child: Image.asset(Assets.splashLogo),
-          onTap: () => print("Upload Function Called."),
+          onTap: () {
+            context.read<AuthProviderNotifier>().createPlayListAndSong(
+                widget.isFromPlaylist,
+                playlistId: widget.playlistId ?? '',
+                playListName: widget.playlistName,
+                playlistDescription: widget.playlistDescription,
+                songName: title.text.trim(),
+                songGenre: genre.text.trim(),
+                description: desc.text.trim());
+          },
+        ),
+        SizedBox(
+          height: 15,
         ),
         TextField(
           decoration: InputDecoration(
@@ -48,7 +80,7 @@ class _UploadMusicState extends State<UploadMusic> {
                   borderRadius: BorderRadius.circular(20.0))),
         ),
         SizedBox(
-          height: 20,
+          height: 15,
         ),
         TextField(
           decoration: InputDecoration(
@@ -60,7 +92,7 @@ class _UploadMusicState extends State<UploadMusic> {
                   borderRadius: BorderRadius.circular(20.0))),
         ),
         SizedBox(
-          height: 20,
+          height: 15,
         ),
         TextField(
           minLines: 2,
@@ -77,7 +109,7 @@ class _UploadMusicState extends State<UploadMusic> {
           ),
         ),
         SizedBox(
-          height: 20,
+          height: 15,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

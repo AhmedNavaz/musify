@@ -1,14 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:musify/app/constants/assets.constant.dart';
+import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/core/router/router_generator.dart';
 
 class AddPlaylist extends StatefulWidget {
-  const AddPlaylist({Key? key}) : super(key: key);
+  String? playlistId;
+  AddPlaylist({Key? key, this.playlistId}) : super(key: key);
 
   @override
   State<AddPlaylist> createState() => _AddPlaylistState();
 }
 
 class _AddPlaylistState extends State<AddPlaylist> {
+
+  final playlistNameController = TextEditingController();
+  final desController = TextEditingController();
+
+  File? playListFile;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +39,9 @@ class _AddPlaylistState extends State<AddPlaylist> {
             child: Image.asset(Assets.splashLogo),
             onTap: () => print("Upload Function Called."),
           ),
+          SizedBox(height: 15,),
           TextField(
+            controller: playlistNameController,
             decoration: InputDecoration(
                 labelText: "Playlist Name",
                 labelStyle: TextStyle(color: Colors.amber),
@@ -38,9 +51,10 @@ class _AddPlaylistState extends State<AddPlaylist> {
                     borderRadius: BorderRadius.circular(20.0))),
           ),
           SizedBox(
-            height: 20,
+            height: 15,
           ),
           TextField(
+            controller: desController,
             minLines: 2,
             maxLines: 5,
             keyboardType: TextInputType.multiline,
@@ -61,7 +75,15 @@ class _AddPlaylistState extends State<AddPlaylist> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  navigationController.navigateToNamedWithArg(RouteGenerator.uploadMusic, {
+                    "fromPlaylist": true,
+                    "desc": desController.text.trim(),
+                    "playlistName": playlistNameController.text.trim(),
+                    "playlistFile": playListFile,
+                    "playlistId":widget.playlistId ,
+                  });
+                },
                 child: Text("Add Playlist"),
                 style: ElevatedButton.styleFrom(
                     padding:

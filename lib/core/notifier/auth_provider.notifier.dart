@@ -76,9 +76,9 @@ class AuthProviderNotifier extends ChangeNotifier {
       "email": user.email?.trim(),
       "avatar": user.avatar ?? '',
       "gender": user.gender,
-      "uploads": user.uploads,
-      'likedPlaylists' : user.likedPlaylists?.map((e) => e.toJson()).toList(),
-      'likedSongs' : user.likedSongs?.map((e) => e.toJson()).toList(),
+      "uploads": user.uploads?.toJson(),
+      'likedPlaylists' : [],
+      'likedSongs' : [],
       "createdAt": Timestamp.now(),
     };
     await FirebaseFirestore.instance.collection("artists").doc(uid).set(map);

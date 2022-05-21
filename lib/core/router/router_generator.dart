@@ -66,10 +66,16 @@ class RouteGenerator {
         return _getPageRoute(const EditProfile());
 
       case addPlaylist:
-        return _getPageRoute(const AddPlaylist());
+        return _getPageRoute( AddPlaylist(playlistId: args['playlistId'],));
 
       case uploadMusic:
-        return _getPageRoute(const UploadMusic());
+        return _getPageRoute(UploadMusic(
+          isFromPlaylist: args['fromPlaylist'],
+          playlistDescription: args['desc'],
+          playlistName: args['playlistName'],
+          playlistFile: args['playlistFile'],
+          playlistId: args['playlistId'],
+        ));
 
       default:
         return _errorRoute();
