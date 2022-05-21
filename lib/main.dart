@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:musify/constants/controller.dart';
 import 'package:musify/controllers/navigation_controller.dart';
 import 'package:musify/router/router_generator.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   Get.put(NavigationController());
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
 
