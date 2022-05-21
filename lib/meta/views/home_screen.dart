@@ -3,17 +3,20 @@ import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/core/model/playlist.model.dart';
 import 'package:musify/core/model/songs.model.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   List<PlaylistsModel> playlistList = [
     PlaylistsModel(
         name: 'Playlist 1',
@@ -83,6 +86,26 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
+      drawer: Drawer(
+        child: ListView(children: <Widget>[
+          DrawerHeader(
+            child: Container(),
+          ),
+          InkWell(
+            onTap: () {
+              context.read<AuthProviderNotifier>().logout();
+            },
+            child: Text(
+              "Logout",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline1!
+                  .copyWith(color: Colors.black),
+            ),
+          ),
+        ]),
+      ),
       appBar: AppBar(
         title: AppBar(
           title: Text(''),
@@ -104,7 +127,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         backgroundColor: Colors.transparent,
-        leading: Icon(Icons.menu),
+        leading: InkWell(
+          child: Icon(Icons.menu),
+          onTap: () => _key.currentState!.openDrawer(),
+        ),
       ),
       backgroundColor: Colors.black,
       body: Column(

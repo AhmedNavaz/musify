@@ -87,7 +87,7 @@ class RouteGenerator {
         return _getPageRoute(const CommentsScreen());
 
       case homeScreen:
-        return _getPageRoute(const MainScreen());
+        return _getPageRoute(MainScreen());
 
       default:
         return _errorRoute();

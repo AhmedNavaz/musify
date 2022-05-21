@@ -97,16 +97,32 @@ class _MediaPlayerViewState extends State<MediaPlayerView>
               child: Image.asset(Assets.splashLogo, width: 400, height: 400),
             ),
             InkWell(
-              child: Icon(
-                Icons.play_arrow,
-                color: AppTheme.primaryColor,
-                size: 50,
-              ),
+              child: isPlaying
+                  ? Icon(
+                      Icons.pause,
+                      color: AppTheme.primaryColor,
+                      size: 50,
+                    )
+                  : Icon(
+                      Icons.play_arrow,
+                      color: AppTheme.primaryColor,
+                      size: 50,
+                    ),
               onTap: () async {
                 if (!isPlaying && !isPaused) {
-                  ByteData bytes = await rootBundle.load(path);
-                  Uint8List soundbytes = bytes.buffer
-                      .asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
+                  await audioPlayer.notificationService.startHeadlessService();
+                  await audioPlayer.notificationService.setNotification(
+                    title: 'My Song',
+                    albumTitle: 'My Album',
+                    artist: 'My Artist',
+                    imageUrl: 'Image URL or blank',
+                    forwardSkipInterval: const Duration(seconds: 30),
+                    backwardSkipInterval: const Duration(seconds: 30),
+                    duration: const Duration(minutes: 3),
+                    elapsedTime: const Duration(seconds: 15),
+                    enableNextTrackButton: true,
+                    enablePreviousTrackButton: true,
+                  );
                   await audioPlayer.play(path, isLocal: false);
                   setState(() {
                     isPlaying = true;

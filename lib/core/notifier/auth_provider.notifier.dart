@@ -77,8 +77,8 @@ class AuthProviderNotifier extends ChangeNotifier {
       "email": user.email?.trim(),
       "avatar": user.avatar ?? '',
       "gender": user.gender,
-      'likedPlaylists' : [],
-      'likedSongs' : [],
+      'likedPlaylists': [],
+      'likedSongs': [],
       "createdAt": Timestamp.now(),
     };
     await FirebaseFirestore.instance.collection("artists").doc(uid).set(map);
@@ -121,7 +121,10 @@ class AuthProviderNotifier extends ChangeNotifier {
   }
 
   Future<void> loadAllArtists() async {
-    Stream<QuerySnapshot<Map<String, dynamic>>> test = _firestore.collection('artists').where('uid', isNotEqualTo: HiveDatabase.getValue(HiveDatabase.authUid)).snapshots();
+    Stream<QuerySnapshot<Map<String, dynamic>>> test = _firestore
+        .collection('artists')
+        .where('uid', isNotEqualTo: HiveDatabase.getValue(HiveDatabase.authUid))
+        .snapshots();
     test.forEach((element) {
       element.docs.forEach((element) {
         print(element.data());
@@ -130,9 +133,7 @@ class AuthProviderNotifier extends ChangeNotifier {
     });
   }
 
-  Future likePlaylist(PlaylistsModel playlist) async {
-
-  }
+  Future likePlaylist(PlaylistsModel playlist) async {}
 
   Future updateMyDetails(context, AuthModel userModel) async {
     // String uid = await AppPref().getUid();
@@ -148,9 +149,9 @@ class AuthProviderNotifier extends ChangeNotifier {
   }
 
   Future<bool> changePassword(AuthModel user) async {
-
     try {
-      var credentials = EmailAuthProvider.credential(email: user.email!, password: user.password!);
+      var credentials = EmailAuthProvider.credential(
+          email: user.email!, password: user.password!);
       User? firebaseUser = FirebaseAuth.instance.currentUser;
 
       await firebaseUser?.reauthenticateWithCredential(credentials);
@@ -159,7 +160,8 @@ class AuthProviderNotifier extends ChangeNotifier {
       notifyListeners();
       return true;
     } on FirebaseAuthException catch (e) {
-      CustomSnackBar.showSuccessSnackBar(title: "Profile update failed", message: '');
+      CustomSnackBar.showSuccessSnackBar(
+          title: "Profile update failed", message: '');
       return false;
     }
   }
@@ -176,7 +178,6 @@ class AuthProviderNotifier extends ChangeNotifier {
         playlists: [],
         songs: [],
         createdAt: Timestamp.now(),
-
       );
       if (!isNew) {
         if (await writeUserToDatabase(_user.uid, _user)) {
@@ -266,14 +267,19 @@ class AuthProviderNotifier extends ChangeNotifier {
           var map = {
             "artistName": currentUser.username,
             "artistUid": currentUser.uid,
-            'playlists': FieldValue.arrayUnion([PlaylistsModel(name: playListName, description: playlistDescription, imagePath: value).toJson()])
+            'playlists': FieldValue.arrayUnion([
+              PlaylistsModel(
+                      name: playListName,
+                      description: playlistDescription,
+                      imagePath: value)
+                  .toJson()
+            ])
           };
 
           await FirebaseFirestore.instance
               .collection("artists")
               .doc(uid)
               .update(map);
-
 
           Reference songRef = FirebaseStorage.instance
               .ref()
@@ -285,11 +291,16 @@ class AuthProviderNotifier extends ChangeNotifier {
           UploadTask songUploadTask = songRef.putFile(songFile);
           await songUploadTask.whenComplete(() async {
             await songRef.getDownloadURL().then((value) async {
-
               var map = {
                 "artistName": currentUser.username,
                 "artistUid": currentUser.uid,
-                'songs': FieldValue.arrayUnion([SongsModel(songName: songName, songGenre: songGenre, songUrl: value).toJson()])
+                'songs': FieldValue.arrayUnion([
+                  SongsModel(
+                          songName: songName,
+                          songGenre: songGenre,
+                          songUrl: value)
+                      .toJson()
+                ])
               };
 
               await FirebaseFirestore.instance
@@ -300,7 +311,6 @@ class AuthProviderNotifier extends ChangeNotifier {
               navigationController.getOffAll(RouteGenerator.homeScreen);
             });
           });
-
         });
       });
     }
@@ -338,7 +348,7 @@ class AuthProviderNotifier extends ChangeNotifier {
   /*
   * Logout
   */
-  Future logout(context) async {
+  Future logout() async {
     await FirebaseAuth.instance.signOut();
     await googleSignIn.signOut();
     await facebookLogin.logOut();
