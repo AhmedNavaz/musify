@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:musify/core/model/playlist.model.dart';
 import 'package:musify/core/model/songs.model.dart';
@@ -26,19 +28,21 @@ class AuthModel {
     this.songs,
   });
 
-  AuthModel.fromDocumentSnapshot(DocumentSnapshot doc) {
+  AuthModel.fromDocumentSnapshot(DocumentSnapshot doc, bool getUser) {
     uid = doc.id;
     username = doc['username'];
     gender = doc['gender'];
     email = doc['email'];
     avatar = doc['avatar'];
     createdAt = doc['createdAt'];
-     doc['playlists'].forEach((e){
-       playlists!.add(PlaylistsModel.fromDocumentSnapshot(e));
-    });
-    doc['songs'].forEach((e){
-      songs!.add(SongsModel.fromDocumentSnapshot(e));
-    })
+    if(getUser){
+      doc['playlists'].forEach((e) {
+        playlists!.add(PlaylistsModel.fromDocumentSnapshot(e));
+      });
+      doc['songs'].map((e) {
+        songs!.add(SongsModel.fromDocumentSnapshot(e));
+      });
+    }
 ;  }
 
 

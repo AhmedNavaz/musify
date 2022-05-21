@@ -3,8 +3,10 @@ import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/core/model/playlist.model.dart';
 import 'package:musify/core/model/songs.model.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -123,27 +125,29 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: playlistList.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 5, right: 5, top: 10, bottom: 10),
-                        child: Image.asset(Assets.splashLogo,
-                            width: 100, height: 100),
-                      ),
-                      Text(
-                        "Playlist 1",
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              color: AppTheme.primaryColor,
-                            ),
-                      ),
-                    ],
-                  );
-                }),
+            child: Consumer<AuthProviderNotifier>(builder: (ctx, not, child){
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 5, top: 10, bottom: 10),
+                          child: Image.asset(Assets.splashLogo,
+                              width: 100, height: 100),
+                        ),
+                        Text(
+                          "Playlist ${index + 1}",
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            })
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),

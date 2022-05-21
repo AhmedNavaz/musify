@@ -110,7 +110,7 @@ class AuthProviderNotifier extends ChangeNotifier {
           message: '',
         );
       }
-      currentUser = AuthModel.fromDocumentSnapshot(doc);
+      // currentUser = AuthModel.fromDocumentSnapshot(doc, true);
       notifyListeners();
       print(currentUser);
       return currentUser;
@@ -123,9 +123,8 @@ class AuthProviderNotifier extends ChangeNotifier {
   Future<void> loadAllArtists() async {
     Stream<QuerySnapshot<Map<String, dynamic>>> test = _firestore.collection('artists').where('uid', isNotEqualTo: HiveDatabase.getValue(HiveDatabase.authUid)).snapshots();
     test.forEach((element) {
-      element.docs.forEach((element) {
-        print(element.data());
-        // allArtists.add(AuthModel.fromDocumentSnapshot(element));
+      element.docs.map((element) {
+        allArtists.add(AuthModel.fromDocumentSnapshot(element, false));
       });
     });
   }
@@ -297,7 +296,7 @@ class AuthProviderNotifier extends ChangeNotifier {
                   .doc(uid)
                   .update(map);
 
-              navigationController.getOffAll(RouteGenerator.homeScreen);
+              navigationController.getOffAll(RouteGenerator.home);
             });
           });
 

@@ -5,6 +5,7 @@ import 'package:musify/meta/views/bottom_navigation/add/body.dart';
 import 'package:musify/meta/views/bottom_navigation/liked/body.dart';
 import 'package:musify/meta/views/bottom_navigation/listen_later/body.dart';
 import 'package:musify/meta/views/bottom_navigation/search/body.dart';
+import 'package:musify/meta/views/home_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class NavBody extends StatefulWidget {
 
 class _NavBodyState extends State<NavBody> {
   final List<Widget> _children = [
+    MainScreen(),
     LikedView(),
     AddView(),
     SearchScreen(),
@@ -30,6 +32,12 @@ class _NavBodyState extends State<NavBody> {
   }
 
   final List<PersistentBottomNavBarItem> _navBarItems = [
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.home),
+      title: 'Home',
+      inactiveColorPrimary: AppTheme.primaryColor,
+      activeColorPrimary: AppTheme.primaryColor,
+    ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.favorite),
       title: 'Liked',
