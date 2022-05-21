@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:musify/app/constants/assets.constant.dart';
+import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/core/model/playlist.model.dart';
 import 'package:musify/core/model/songs.model.dart';
+import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
 
 class MainScreen extends StatefulWidget {
@@ -39,13 +41,6 @@ class _MainScreenState extends State<MainScreen> {
         description: 'This is playlist 5',
         imagePath: 'assets/images/playlist5.jpg')
   ];
-
-  // String? songId;
-  // String? songTitle;
-  // String? songGenre;
-  // String? songUrl;
-  // String? songName;
-  // String? songDescription;
 
   List<SongsModel> songsList = [
     SongsModel(
@@ -94,23 +89,28 @@ class _MainScreenState extends State<MainScreen> {
           automaticallyImplyLeading: false,
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.person_outline_rounded,
-              size: 30,
-              color: Colors.amber,
+          InkWell(
+            onTap: () {
+              navigationController.navigateToNamed(RouteGenerator.profile);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.person_outline_rounded,
+                size: 30,
+                color: Colors.amber,
+              ),
             ),
           ),
         ],
         backgroundColor: Colors.transparent,
-        leading: Icon(Icons.more),
+        leading: Icon(Icons.menu),
       ),
       backgroundColor: Colors.black,
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Text(
@@ -130,8 +130,8 @@ class _MainScreenState extends State<MainScreen> {
                   return Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5, vertical: 10),
+                        padding: const EdgeInsets.only(
+                            left: 5, right: 5, top: 10, bottom: 10),
                         child: Image.asset(Assets.splashLogo,
                             width: 100, height: 100),
                       ),
@@ -145,7 +145,42 @@ class _MainScreenState extends State<MainScreen> {
                   );
                 }),
           ),
-          //
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "Artists",
+                style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: songsList.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 5, right: 5, top: 10, bottom: 10),
+                        child: Image.asset(Assets.splashLogo,
+                            width: 100, height: 100),
+                      ),
+                      Text(
+                        "Artists 1",
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                              color: AppTheme.primaryColor,
+                            ),
+                      ),
+                    ],
+                  );
+                }),
+          ),
         ],
       ),
     );

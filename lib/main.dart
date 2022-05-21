@@ -42,7 +42,7 @@ class _MusifyAppState extends State<MusifyApp> {
                 GetMaterialApp(
                   title: "Musify",
                   debugShowCheckedModeBanner: false,
-                  initialRoute: RouteGenerator.splashScreen,
+                  initialRoute: RouteGenerator.mediaPlayer,
                   // initialRoute: RouteGenerator.editProfile,
                   onGenerateRoute: RouteGenerator.onGeneratedRoutes,
                   theme: AppTheme.lightTheme,
