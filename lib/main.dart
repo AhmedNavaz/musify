@@ -1,33 +1,52 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:musify/constants/controller.dart';
-import 'package:musify/controllers/navigation_controller.dart';
-import 'package:musify/router/router_generator.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-void main() {
+import 'app/providers/multi_providers.dart';
+import 'core/controller/navigation_controller.dart';
+import 'core/notifier/connection.notifier.dart';
+import 'core/router/router_generator.dart';
+import 'meta/utils/app_theme.dart';
+import 'meta/utils/hive_database.dart';
+import 'meta/utils/shared_pref.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // INITIALIZING IMPORTANT DEPENDENCIES
   Get.put(NavigationController());
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const MyApp());
+  await SharedPref.init();
+  await ConnectionNotifier().initConnectivity();
+  await HiveDatabase.init();
+  await Firebase.initializeApp();
+  // ENTRY POINT TO THE APP
+  runApp(const MusifyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MusifyApp extends StatefulWidget {
+  const MusifyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  _MusifyAppState createState() => _MusifyAppState();
+}
+
+class _MusifyAppState extends State<MusifyApp> {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Musify',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: root,
-      onGenerateRoute: RouteGenerator.onGeneratedRoutes,
-      defaultTransition: Transition.zoom,
-      navigatorKey: navigationController.navigationKey,
+    return MediaQuery(
+      data: const MediaQueryData(),
+      child: ScreenUtilInit(
+          builder: () => MultiProviders(
+                GetMaterialApp(
+                  title: "Musify",
+                  debugShowCheckedModeBanner: false,
+                  initialRoute: RouteGenerator.splashScreen,
+                  onGenerateRoute: RouteGenerator.onGeneratedRoutes,
+                  theme: AppTheme.lightTheme,
+                ),
+              )),
     );
   }
 }
