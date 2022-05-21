@@ -36,16 +36,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(Assets.splashLogo),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-        Text(
-          "Musify",
-          style: Theme.of(context).textTheme.headline1,
-        ),
-      ],
+        body: Align(
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(Assets.splashLogo),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          Text(
+            "Musify",
+            style: Theme.of(context).textTheme.headline1,
+          ),
+        ],
+      ),
     ));
   }
 }
