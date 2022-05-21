@@ -27,7 +27,7 @@ class ApiService {
     log('data: $data');
     try {
       ApiConfig().dio.options.headers[HttpHeaders.authorizationHeader] =
-          HiveDatabase.getValue(HiveDatabase.authToken);
+          HiveDatabase.getValue(HiveDatabase.authUid);
       // ApiConfig().dio.options.headers['X-localization'] = Get.locale!.languageCode.toString();
       ApiConfig().dio.options.method = describeEnum(method);
       cancelToken = dio.CancelToken();

@@ -58,7 +58,11 @@ dependencies:
   permission_handler: ^9.2.0
   firebase_core: ^1.15.0
   firebase_auth: ^3.3.16
-  firebase_messaging: ^11.3.0
+  cloud_firestore: ^3.1.15
+  firebase_storage: ^10.2.16
+  google_sign_in: ^5.3.1
+  flutter_facebook_login: ^3.0.0
+  just_audio: ^0.9.21
 
   # extras
   flutter_svg: ^1.0.3

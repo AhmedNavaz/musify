@@ -1,31 +1,55 @@
 {
-    "project_info": {
-        "project_number": "14404077421",
-        "project_id": "musify-921ba",
-        "storage_bucket": "musify-921ba.appspot.com"
-    },
-    "client": [{
-        "client_info": {
-            "mobilesdk_app_id": "1:14404077421:android:577ffb97dbfc4772407c64",
-            "android_client_info": {
-                "package_name": "com.example.musify"
-            }
-        },
-        "oauth_client": [{
-            "client_id": "14404077421-jaalkputu60p5fh29hetvisn93vqdrq9.apps.googleusercontent.com",
-            "client_type": 3
-        }],
-        "api_key": [{
-            "current_key": "AIzaSyBo6KC0ZnXNtn2Z6qUSzAbgqKg-69f5gX8"
-        }],
-        "services": {
-            "appinvite_service": {
-                "other_platform_oauth_client": [{
-                    "client_id": "14404077421-jaalkputu60p5fh29hetvisn93vqdrq9.apps.googleusercontent.com",
-                    "client_type": 3
-                }]
-            }
+  "project_info": {
+    "project_number": "14404077421",
+    "project_id": "musify-921ba",
+    "storage_bucket": "musify-921ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14404077421:android:577ffb97dbfc4772407c64",
+        "android_client_info": {
+          "package_name": "com.example.musify"
         }
-    }],
-    "configuration_version": "1"
+      },
+      "oauth_client": [
+        {
+          "client_id": "14404077421-312fp9pl31o1cir5uvi64b9a4bnje6on.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.musify",
+            "certificate_hash": "2a3e2a79fb8f0242b1d3b2ab0f054b1bd97d0cbf"
+          }
+        },
+        {
+          "client_id": "14404077421-6bfkerfif11331f0j3u04j95b7sbj2fc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.musify",
+            "certificate_hash": "41a469036742390d4373a12b042e8d0257122ff6"
+          }
+        },
+        {
+          "client_id": "14404077421-jaalkputu60p5fh29hetvisn93vqdrq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo6KC0ZnXNtn2Z6qUSzAbgqKg-69f5gX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14404077421-jaalkputu60p5fh29hetvisn93vqdrq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }

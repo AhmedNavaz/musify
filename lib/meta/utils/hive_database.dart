@@ -2,12 +2,10 @@ import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
-class HiveDatabase{
-
+class HiveDatabase {
   static String loginCheck = 'loginCheck';
-  static String authToken = 'authToken';
+  static String authUid = 'authUid';
   static String userModel = 'userModel';
-  static String userId = 'userId';
   static String userCityId = 'userCityId';
   static String appBox = 'app';
 
@@ -28,8 +26,7 @@ class HiveDatabase{
     _instance._box!.put(key, value);
   }
 
-  static dynamic getValue(String key){
+  static dynamic getValue(String key) {
     return _instance._box?.get(key) ?? "null";
   }
-
 }
