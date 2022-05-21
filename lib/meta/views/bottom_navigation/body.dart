@@ -17,7 +17,7 @@ class _NavBodyState extends State<NavBody> {
   final List<Widget> _children = [
     LikedView(),
     AddView(),
-    SearchView(),
+    SearchScreen(),
     ListenLaterView()
   ];
   final List<PersistentBottomNavBarItem> _navBarItems = [
@@ -58,6 +58,7 @@ class _NavBodyState extends State<NavBody> {
       screens: _children,
       items: _navBarItems,
       confineInSafeArea: true,
+      stateManagement: true,
       resizeToAvoidBottomInset: true,
       backgroundColor: AppTheme.selectedNavBarBackgroundColor,
       hideNavigationBarWhenKeyboardShows: true,
@@ -73,7 +74,7 @@ class _NavBodyState extends State<NavBody> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style2,
+      navBarStyle: NavBarStyle.style6,
     );
   }
 }
