@@ -52,7 +52,6 @@ class AppTheme {
 
   static const Color unSelectedNavBarItemColor = Color(0xFF9A9B9B);
 
-
   static LinearGradient homeServiceLinearGradient = const LinearGradient(
     colors: [
       Color(0xFF93D2FF),
@@ -66,8 +65,8 @@ class AppTheme {
     return ThemeData(
       fontFamily: GoogleFonts.montserrat().fontFamily,
       primaryColor: lightBackgroundColor,
-      backgroundColor: lightBackgroundColor,
-      scaffoldBackgroundColor: lightBackgroundColor,
+      backgroundColor: darkBackgroundColor,
+      scaffoldBackgroundColor: darkBackgroundColor,
       primaryColorLight: const Color(0xFFF1F1F1),
       splashColor: splashColor,
       brightness: Brightness.light,
@@ -106,9 +105,7 @@ class AppTheme {
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: bottomNavBarBackground,
-        elevation: 3
-      ),
+          backgroundColor: bottomNavBarBackground, elevation: 3),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(
           color: hintColor,
@@ -125,55 +122,21 @@ class AppTheme {
           // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           primary: whiteColor,
           shape: RoundedRectangleBorder(
-            //to set border radius to button
+              //to set border radius to button
               borderRadius: BorderRadius.circular(30)),
         ),
       ),
       textSelectionTheme:
-      const TextSelectionThemeData(cursorColor: primaryColor), colorScheme: ColorScheme.fromSwatch()
-        .copyWith(
-      secondary: const Color(0xFF79A6DC),
-      brightness: Brightness.light,
-    )
-        .copyWith(secondary: primaryColor).copyWith(secondary: primaryColor),
+          const TextSelectionThemeData(cursorColor: primaryColor),
+      colorScheme: ColorScheme.fromSwatch()
+          .copyWith(
+            secondary: const Color(0xFF79A6DC),
+            brightness: Brightness.light,
+          )
+          .copyWith(secondary: primaryColor)
+          .copyWith(secondary: primaryColor),
     );
   }
-
-// static ThemeData get darkTheme {
-//   return ThemeData(
-//     fontFamily: GoogleFonts.montserrat().fontFamily,
-//     canvasColor: darkBackgroundColor,
-//     primaryColor: darkBackgroundColor,
-//     backgroundColor: darkBackgroundColor,
-//     unselectedWidgetColor: Colors.blueGrey.withOpacity(0.4),
-//     scaffoldBackgroundColor: darkBackgroundColor,
-//     primaryColorLight: const Color(0xFF2D333A),
-//     focusColor: const Color(0xFF444C56),
-//     errorColor: errorColor,
-//     splashColor: Colors.transparent,
-//     highlightColor: Colors.transparent,
-//     iconTheme: const IconThemeData(color: Colors.white),
-//     dividerColor: Colors.white,
-//     textTheme: const TextTheme(
-//       headline1: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//       headline2: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//       bodyText1: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//       bodyText2: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//     ),
-//     colorScheme: ColorScheme.fromSwatch().copyWith(
-//       secondary: const Color(0xFF6E7681),
-//       brightness: Brightness.dark,
-//     ),
-//   );
-// }
 }
 
 extension MyThemeData on ThemeData {
