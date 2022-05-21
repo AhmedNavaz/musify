@@ -1,9 +1,11 @@
 import 'dart:io';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 class UploadMusic extends StatefulWidget {
   String playlistName, playlistDescription;
@@ -28,6 +30,33 @@ class _UploadMusicState extends State<UploadMusic> {
   final title = TextEditingController();
   final genre = TextEditingController();
   final desc = TextEditingController();
+
+  String? _fileName;
+  PlatformFile? _path;
+  bool _loadingPath = false;
+
+  void _openFileExplorer() async {
+    setState(() => _loadingPath = true);
+    try {
+      _path = (await FilePicker.platform.pickFiles(
+        type: FileType.audio,
+        onFileLoading: (FilePickerStatus status) => print(status),
+      ))
+          ?.files
+          .single;
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    } catch (ex) {
+      print(ex);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _loadingPath = false;
+
+      _fileName = _path != null ? p.basename(_path!.path.toString()) : '...';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +84,20 @@ class _UploadMusicState extends State<UploadMusic> {
       ),
       body: Column(children: [
         InkWell(
-          child: Image.asset(Assets.splashLogo),
+          child: _fileName == null
+              ? Image.asset(Assets.upload, width: 250, height: 250)
+              : Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    '$_fileName',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1!
+                        .copyWith(fontSize: 22),
+                  ),
+                ),
           onTap: () {
+            _openFileExplorer();
             context.read<AuthProviderNotifier>().createPlayListAndSong(
                 widget.isFromPlaylist,
                 playlistId: widget.playlistId ?? '',
