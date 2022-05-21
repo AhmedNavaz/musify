@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/meta/utils/app_theme.dart';
 import 'package:musify/meta/views/bottom_navigation/add/body.dart';
 import 'package:musify/meta/views/bottom_navigation/liked/body.dart';
 import 'package:musify/meta/views/bottom_navigation/listen_later/body.dart';
 import 'package:musify/meta/views/bottom_navigation/search/body.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class NavBody extends StatefulWidget {
   const NavBody({Key? key}) : super(key: key);
@@ -20,6 +22,13 @@ class _NavBodyState extends State<NavBody> {
     SearchScreen(),
     ListenLaterView()
   ];
+
+  @override
+  void initState() {
+    context.read<AuthProviderNotifier>().loadAllArtists();
+    super.initState();
+  }
+
   final List<PersistentBottomNavBarItem> _navBarItems = [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.favorite),
@@ -70,7 +79,7 @@ class _NavBodyState extends State<NavBody> {
         curve: Curves.ease,
       ),
       screenTransitionAnimation: const ScreenTransitionAnimation(
-        animateTabTransition: true,
+        animateTabTransition: false,
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),

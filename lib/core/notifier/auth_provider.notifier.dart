@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/core/model/playlist.model.dart';
+import 'package:musify/core/model/uploads.model.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/hive_database.dart';
 import '../../components/custom_snackbar.dart';
@@ -21,6 +23,7 @@ class AuthProviderNotifier extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
   final facebookLogin = FacebookLogin();
 
+  List<AuthModel> allArtists = <AuthModel>[];
   /* 
   * sign up
   */
@@ -74,6 +77,8 @@ class AuthProviderNotifier extends ChangeNotifier {
       "avatar": user.avatar ?? '',
       "gender": user.gender,
       "uploads": user.uploads,
+      'likedPlaylists' : user.likedPlaylists?.map((e) => e.toJson()).toList(),
+      'likedSongs' : user.likedSongs?.map((e) => e.toJson()).toList(),
       "createdAt": Timestamp.now(),
     };
     await FirebaseFirestore.instance.collection("artists").doc(uid).set(map);
@@ -114,6 +119,19 @@ class AuthProviderNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> loadAllArtists() async {
+    Stream<QuerySnapshot<Map<String, dynamic>>> test = _firestore.collection('artists').where('uid', isNotEqualTo: HiveDatabase.getValue(HiveDatabase.authUid)).snapshots();
+    test.forEach((element) {
+      element.docs.forEach((element) {
+        allArtists.add(AuthModel.fromDocumentSnapshot(element));
+      });
+    });
+  }
+
+  Future likePlaylist(PlaylistsModel playlist) async {
+
+  }
+
   Future createUserWithSocial() async {
     Future.delayed(const Duration(milliseconds: 1000), () async {
       bool isNew = await isNewUser(_auth.currentUser);
@@ -123,7 +141,9 @@ class AuthProviderNotifier extends ChangeNotifier {
         email: _auth.currentUser!.email,
         avatar: _auth.currentUser!.photoURL,
         gender: '',
-        uploads: null,
+        uploads: UploadsModel(playlists: [], songs: []),
+        likedPlaylists: [],
+        likedSongs: [],
         createdAt: Timestamp.now(),
 
       );
