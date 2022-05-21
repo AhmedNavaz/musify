@@ -6,6 +6,7 @@ import 'package:musify/meta/views/bottom_navigation/add/add_playlist.dart';
 import 'package:musify/meta/views/bottom_navigation/body.dart';
 import 'package:musify/meta/views/comment_screen.dart';
 import 'package:musify/meta/views/edit_profile.dart';
+import 'package:musify/meta/views/home_screen.dart';
 import 'package:musify/meta/views/media_player.dart';
 import 'package:musify/meta/views/profile_screen.dart';
 import 'package:musify/meta/views/splash/splash_screen.dart';
@@ -27,6 +28,7 @@ class RouteGenerator {
   static const String editProfile = '/edit-profile';
   static const String addPlaylist = '/add-playlist';
   static const String uploadMusic = '/upload-music';
+  static const String homeScreen = '/home-screen';
   static const String commentScreen = '/comment-screen';
   static const String forgotPasswordScreen = '/forgot-password-screen';
   static const String enterPhoneNumberScreen = '/enter-phone-number-screen';
@@ -68,7 +70,9 @@ class RouteGenerator {
         return _getPageRoute(const EditProfile());
 
       case addPlaylist:
-        return _getPageRoute( AddPlaylist(playlistId: args['playlistId'],));
+        return _getPageRoute(AddPlaylist(
+          playlistId: args['playlistId'],
+        ));
 
       case uploadMusic:
         return _getPageRoute(UploadMusic(
@@ -81,6 +85,9 @@ class RouteGenerator {
 
       case commentScreen:
         return _getPageRoute(const CommentsScreen());
+
+      case homeScreen:
+        return _getPageRoute(const MainScreen());
 
       default:
         return _errorRoute();
