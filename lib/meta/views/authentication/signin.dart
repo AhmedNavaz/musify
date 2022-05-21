@@ -4,6 +4,7 @@ import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/components/custom_snackbar.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
+import 'package:musify/meta/utils/hive_database.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/constants/strings.constant.dart';
@@ -42,6 +43,7 @@ class _SigninViewState extends State<SigninView> {
 
       if (success) {
         navigationController.getOffAll(RouteGenerator.home);
+        HiveDatabase.storeValue(HiveDatabase.pass, passwordController.text.trim());
         CustomSnackBar.showSuccessSnackBar(title: 'Login Successful', message: "");
         print("TRUE");
       }

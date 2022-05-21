@@ -20,7 +20,6 @@ class _AddPlaylistState extends State<AddPlaylist> {
   final playlistNameController = TextEditingController();
   final desController = TextEditingController();
 
-  File? playListFile;
 
   Future<File>? uploadImage() async {
     final picker = ImagePicker();
@@ -113,7 +112,7 @@ class _AddPlaylistState extends State<AddPlaylist> {
                     "fromPlaylist": true,
                     "desc": desController.text.trim(),
                     "playlistName": playlistNameController.text.trim(),
-                    "playlistFile": playListFile,
+                    "playlistFile": coverImage,
                     "playlistId":widget.playlistId ,
                   });
                 },

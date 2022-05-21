@@ -111,6 +111,7 @@ class AuthProviderNotifier extends ChangeNotifier {
         );
       }
       currentUser = AuthModel.fromDocumentSnapshot(doc);
+      notifyListeners();
       print(currentUser);
       return currentUser;
     } catch (e) {
@@ -123,6 +124,7 @@ class AuthProviderNotifier extends ChangeNotifier {
     Stream<QuerySnapshot<Map<String, dynamic>>> test = _firestore.collection('artists').where('uid', isNotEqualTo: HiveDatabase.getValue(HiveDatabase.authUid)).snapshots();
     test.forEach((element) {
       element.docs.forEach((element) {
+        print(element.data());
         allArtists.add(AuthModel.fromDocumentSnapshot(element));
       });
     });
@@ -130,6 +132,36 @@ class AuthProviderNotifier extends ChangeNotifier {
 
   Future likePlaylist(PlaylistsModel playlist) async {
 
+  }
+
+  Future updateMyDetails(context, AuthModel userModel) async {
+    // String uid = await AppPref().getUid();
+    String uid = HiveDatabase.getValue(HiveDatabase.authUid);
+
+    var map = {
+      "username": "${userModel.username}",
+    };
+
+    await FirebaseFirestore.instance.collection("users").doc(uid).update(map);
+    getUser(uid);
+    changePassword(userModel);
+  }
+
+  Future<bool> changePassword(AuthModel user) async {
+
+    try {
+      var credentials = EmailAuthProvider.credential(email: user.email!, password: user.password!);
+      User? firebaseUser = FirebaseAuth.instance.currentUser;
+
+      await firebaseUser?.reauthenticateWithCredential(credentials);
+      await FirebaseAuth.instance.currentUser?.updatePassword(user.password!);
+      CustomSnackBar.showSuccessSnackBar(title: "Profile updated", message: '');
+      notifyListeners();
+      return true;
+    } on FirebaseAuthException catch (e) {
+      CustomSnackBar.showSuccessSnackBar(title: "Profile update failed", message: '');
+      return false;
+    }
   }
 
   Future createUserWithSocial() async {
@@ -141,7 +173,7 @@ class AuthProviderNotifier extends ChangeNotifier {
         email: _auth.currentUser!.email,
         avatar: _auth.currentUser!.photoURL,
         gender: '',
-        uploads: UploadsModel(playlists: [], songs: []),
+        uploads: UploadsModel(uploadId: "", artistName: "", artistUid: "", playlists: [], songs: []),
         likedPlaylists: [],
         likedSongs: [],
         createdAt: Timestamp.now(),

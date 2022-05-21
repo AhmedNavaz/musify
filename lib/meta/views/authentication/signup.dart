@@ -4,6 +4,7 @@ import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/components/custom_snackbar.dart';
 import 'package:musify/core/model/auth_model.dart';
+import 'package:musify/core/model/uploads.model.dart';
 import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
@@ -46,7 +47,7 @@ class _SignupViewState extends State<SignupView> {
         pressed = true;
       });
 
-      bool success = await context.read<AuthProviderNotifier>().signup(AuthModel(username: nameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim(), gender: _selectedGender));
+      bool success = await context.read<AuthProviderNotifier>().signup(AuthModel(username: nameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim(), gender: _selectedGender, uploads: UploadsModel(uploadId: "", artistName: "", artistUid: "", playlists: [], songs: [])));
 
       if(success){
         navigationController.getOffAll(RouteGenerator.home);

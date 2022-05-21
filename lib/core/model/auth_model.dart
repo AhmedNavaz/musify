@@ -35,7 +35,7 @@ class AuthModel {
     email = doc['email'];
     avatar = doc['avatar'];
     createdAt = doc['createdAt'];
-    uploads = doc['uploads'];
+    uploads = UploadsModel.fromDocumentSnapshot(doc['uploads']);
     doc['likedPlaylists'].forEach((e){
       likedPlaylists!.add(PlaylistsModel.fromDocumentSnapshot(e));
     });

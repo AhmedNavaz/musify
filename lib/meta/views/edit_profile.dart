@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:musify/core/model/auth_model.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
+import 'package:musify/meta/utils/hive_database.dart';
+import 'package:provider/provider.dart';
+
+import '../utils/app_theme.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -8,21 +14,24 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController passController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    emailController.text = "abcd@abcd.com";
-    passController.text = "password123";
+    // nameController.text = context.read<AuthProviderNotifier>().currentUser.username!;
+    passController.text = HiveDatabase.getValue(HiveDatabase.pass);
   }
+
+  bool passShow = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         appBar: AppBar(
           actions: [
@@ -33,7 +42,9 @@ class _EditProfileState extends State<EditProfile> {
                   "Save",
                   style: TextStyle(color: Colors.amber, fontSize: 20),
                 ),
-                onTap: () => print("Save Button Pressed"),
+                onTap: (){
+                  context.read<AuthProviderNotifier>().updateMyDetails(context, AuthModel(email: context.read<AuthProviderNotifier>().currentUser.email, username: nameController.text.trim(), password: passController.text.trim() ));
+                },
               ),
             )
           ],
@@ -56,7 +67,7 @@ class _EditProfileState extends State<EditProfile> {
           Padding(
             padding: const EdgeInsets.all(14.0),
             child: TextField(
-              controller: emailController,
+              controller: nameController,
               decoration: InputDecoration(
                   suffixText: "edit",
                   filled: true,
@@ -73,10 +84,15 @@ class _EditProfileState extends State<EditProfile> {
           Padding(
             padding: const EdgeInsets.all(14.0),
             child: TextField(
-              obscureText: true,
+              obscureText: !passShow,
               controller: passController,
               decoration: InputDecoration(
-                  suffixText: "edit",
+                  suffix: GestureDetector(onTap: (){
+                    setState(() {
+                      passShow = !passShow;
+                    });
+                  },child: Text( passShow ? "Hide" : "Show", style: Theme.of(context).textTheme.bodyText1?.copyWith(color: AppTheme.primaryColor),)),
+
                   labelStyle: TextStyle(color: Colors.amber),
                   filled: true,
                   fillColor: Colors.white70,

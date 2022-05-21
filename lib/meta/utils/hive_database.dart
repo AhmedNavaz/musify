@@ -6,7 +6,7 @@ class HiveDatabase {
   static String loginCheck = 'loginCheck';
   static String authUid = 'authUid';
   static String userModel = 'userModel';
-  static String userCityId = 'userCityId';
+  static String pass = 'pass';
   static String appBox = 'app';
 
   HiveDatabase._();
