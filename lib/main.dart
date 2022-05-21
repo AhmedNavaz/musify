@@ -29,7 +29,7 @@ class MusifyApp extends StatefulWidget {
   const MusifyApp({Key? key}) : super(key: key);
 
   @override
-  _MusifyAppState createState() => _MusifyAppState();
+  State<MusifyApp> createState() => _MusifyAppState();
 }
 
 class _MusifyAppState extends State<MusifyApp> {
@@ -38,7 +38,7 @@ class _MusifyAppState extends State<MusifyApp> {
     return MediaQuery(
       data: const MediaQueryData(),
       child: ScreenUtilInit(
-          builder: () => MultiProviders(
+          builder: (_, w) => MultiProviders(
                 GetMaterialApp(
                   title: "Musify",
                   debugShowCheckedModeBanner: false,
