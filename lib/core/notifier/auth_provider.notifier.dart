@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,7 +31,7 @@ class AuthProviderNotifier extends ChangeNotifier {
               email: user.email!, password: user.password!);
       if (userCredential.user != null) {
         var uid = userCredential.user?.uid;
-        if(await writeUserToDatabase(uid, user)){
+        if (await writeUserToDatabase(uid, user)) {
           // navigationController.getOffAll(RouteGenerator);
         }
       }
@@ -41,7 +43,7 @@ class AuthProviderNotifier extends ChangeNotifier {
     }
   }
 
-  /* 
+  /*
   * login
   */
   Future<bool> login(AuthModel user) async {
@@ -71,6 +73,7 @@ class AuthProviderNotifier extends ChangeNotifier {
       "email": user.email?.trim(),
       "avatar": user.avatar ?? '',
       "gender": user.gender,
+      "uploads": user.uploads,
       "createdAt": Timestamp.now(),
     };
     await FirebaseFirestore.instance.collection("artists").doc(uid).set(map);
@@ -120,6 +123,9 @@ class AuthProviderNotifier extends ChangeNotifier {
         email: _auth.currentUser!.email,
         avatar: _auth.currentUser!.photoURL,
         gender: '',
+        uploads: null,
+        createdAt: Timestamp.now(),
+
       );
       if (!isNew) {
         if (await writeUserToDatabase(_user.uid, _user)) {
@@ -133,7 +139,6 @@ class AuthProviderNotifier extends ChangeNotifier {
         }
       }
       navigationController.getOffAll(RouteGenerator.home);
-
     });
   }
 
@@ -187,13 +192,52 @@ class AuthProviderNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> createPlayListAndSong(bool playlistSelected,
+      {required String playlistId,
+      File? playListFile,
+      required String playListName,
+      required String playlistDescription,
+      required String songName,
+      required String songGenre,
+      required String description,
+      File? songFile}) async {
+    if (!playlistSelected) {
+      String uid = HiveDatabase.getValue(HiveDatabase.authUid);
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('artists')
+          .child(uid)
+          .child('uploads')
+          .child(playListName);
+      UploadTask uploadTask = ref.putFile(playListFile!);
+      await uploadTask.whenComplete(() async {
+        await ref.getDownloadURL().then((value) async {
+          var map = {
+            "avatar": value,
+          };
+
+          await FirebaseFirestore.instance
+              .collection("artists")
+              .doc(uid)
+              .update(map);
+          CustomSnackBar.showSuccessSnackBar(
+              title: "Avatar updated", message: '');
+        });
+      });
+    }
+  }
+
   /*
   * Update Avatar
   */
   void updateAvatar(file) async {
     String uid = HiveDatabase.getValue(HiveDatabase.authUid);
     CustomSnackBar.showSuccessSnackBar(title: "Starting Upload", message: '');
-    Reference ref = FirebaseStorage.instance.ref().child("images").child(uid).child("avatar");
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child("images")
+        .child(uid)
+        .child("avatar");
 
     UploadTask uploadTask = ref.putFile(file);
     await uploadTask.whenComplete(() async {
@@ -202,8 +246,12 @@ class AuthProviderNotifier extends ChangeNotifier {
           "avatar": value,
         };
 
-        await FirebaseFirestore.instance.collection("artists").doc(uid).update(map);
-        CustomSnackBar.showSuccessSnackBar(title: "Avatar updated", message: '');
+        await FirebaseFirestore.instance
+            .collection("artists")
+            .doc(uid)
+            .update(map);
+        CustomSnackBar.showSuccessSnackBar(
+            title: "Avatar updated", message: '');
       });
     });
   }
@@ -220,8 +268,7 @@ class AuthProviderNotifier extends ChangeNotifier {
     navigationController.getOffAll(RouteGenerator.welcomeScreen);
   }
 
-
-  void saveUidToHive(String uid){
+  void saveUidToHive(String uid) {
     HiveDatabase.storeValue(HiveDatabase.loginCheck, true);
     HiveDatabase.storeValue(HiveDatabase.authUid, uid);
   }
