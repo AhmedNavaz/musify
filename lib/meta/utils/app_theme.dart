@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   AppTheme._();
 
-  static const Color darkBackgroundColor = Color(0xFF181C1E);
+  static const Color darkBackgroundColor = Color(0x00000000);
   static const Color lightBackgroundColor = Color(0xFFFFFFFF);
   static const Color lightComponentsColor = Color(0xFF40CAFF);
   static const Color lightCardColor = Color(0xFFF4F8FA);
@@ -33,7 +33,7 @@ class AppTheme {
   static const Color selectedNavBarItemColor = Color(0xFFB59E5C);
   static const Color appointmentsCardColor = Color(0xFFE4F2FF);
 
-  static const Color primaryColor = Color(0xFFB59E5C);
+  static const Color primaryColor = Color(0xFFD4B300);
   static const Color subtitleLightGreyColor = Color(0xFF8D8D8D);
 
   static const Color shadowColorHomePage = Color(0xFF000000);
@@ -65,8 +65,8 @@ class AppTheme {
     return ThemeData(
       fontFamily: GoogleFonts.openSans().fontFamily,
       primaryColor: lightBackgroundColor,
-      backgroundColor: lightBackgroundColor,
-      scaffoldBackgroundColor: lightBackgroundColor,
+      backgroundColor: darkBackgroundColor,
+      scaffoldBackgroundColor: darkBackgroundColor,
       primaryColorLight: const Color(0xFFF1F1F1),
       splashColor: splashColor,
       brightness: Brightness.light,
@@ -77,12 +77,13 @@ class AppTheme {
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: TextTheme(
         headline1: TextStyle(
-          fontSize: 28.sp,
-          fontWeight: FontWeight.w700,
-          color: primaryColor,
+          fontSize: 38,
+          fontWeight: FontWeight.w500,
+          color: whiteColor,
         ),
         headline2: TextStyle(
-          fontSize: 15.sp,
+          fontSize: 28.sp,
+          fontWeight: FontWeight.w500,
           color: whiteColor,
         ),
         headline3: TextStyle(
@@ -96,7 +97,7 @@ class AppTheme {
           color: Colors.black,
         ),
         bodyText1: TextStyle(
-          fontSize: 12.sp,
+          fontSize: 16,
           color: whiteColor,
         ),
         bodyText2: TextStyle(
@@ -137,42 +138,6 @@ class AppTheme {
           .copyWith(secondary: primaryColor),
     );
   }
-
-// static ThemeData get darkTheme {
-//   return ThemeData(
-//     fontFamily: GoogleFonts.montserrat().fontFamily,
-//     canvasColor: darkBackgroundColor,
-//     primaryColor: darkBackgroundColor,
-//     backgroundColor: darkBackgroundColor,
-//     unselectedWidgetColor: Colors.blueGrey.withOpacity(0.4),
-//     scaffoldBackgroundColor: darkBackgroundColor,
-//     primaryColorLight: const Color(0xFF2D333A),
-//     focusColor: const Color(0xFF444C56),
-//     errorColor: errorColor,
-//     splashColor: Colors.transparent,
-//     highlightColor: Colors.transparent,
-//     iconTheme: const IconThemeData(color: Colors.white),
-//     dividerColor: Colors.white,
-//     textTheme: const TextTheme(
-//       headline1: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//       headline2: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//       bodyText1: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//       bodyText2: TextStyle(
-//         color: Color(0xffFAFAFA),
-//       ),
-//     ),
-//     colorScheme: ColorScheme.fromSwatch().copyWith(
-//       secondary: const Color(0xFF6E7681),
-//       brightness: Brightness.dark,
-//     ),
-//   );
-// }
 }
 
 extension MyThemeData on ThemeData {

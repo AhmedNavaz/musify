@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musify/meta/views/authentication/body.dart';
+import 'package:musify/meta/views/authentication/signin.dart';
+import 'package:musify/meta/views/authentication/signup.dart';
 import 'package:musify/meta/views/splash/splash_screen.dart';
 
 class RouteGenerator {
@@ -28,6 +31,16 @@ class RouteGenerator {
     switch (settings.name) {
       case splashScreen:
         return _getPageRoute(const SplashScreen());
+
+      case welcomeScreen:
+        return _getPageRoute(const SignBody());
+
+      case signupScreen:
+        return _getPageRoute(SignupView());
+
+      case loginScreen:
+        return _getPageRoute(SigninView());
+
       default:
         return _errorRoute();
     }

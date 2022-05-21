@@ -3,7 +3,12 @@ class Assets {
   static const String IMAGES_PATH = "assets/images";
 
   // TODO :: ICONS
-  static const String appLogoText = "$ICON_PATH/app_logo_text.svg";
+  static const String splashLogo = "$ICON_PATH/splash_screen.png";
+  static const String facebook = "$ICON_PATH/facebook.png";
+  static const String google = "$ICON_PATH/google.png";
+  static const String male = "$ICON_PATH/male.png";
+  static const String femail = "$ICON_PATH/female.png";
+  static const String other = "$ICON_PATH/other.png";
 
   // TODO :: IMAGES
   static const String authBackground = "$IMAGES_PATH/bg_img.png";
