@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musify/app/constants/assets.constant.dart';
+import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/core/router/router_generator.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -13,7 +16,10 @@ class ProfileScreen extends StatelessWidget {
                 Icons.edit,
                 color: Colors.amber,
               ),
-              onTap: () => print("Something happend")),
+              onTap: () {
+                navigationController
+                    .navigateToNamed(RouteGenerator.editProfile);
+              }),
         ],
         backgroundColor: Colors.transparent,
         title: Text(
@@ -27,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
             child: const CircleAvatar(
               radius: 100,
               backgroundColor: Colors.black12,
-              backgroundImage: AssetImage("assets/placeholder.png"),
+              backgroundImage: AssetImage(Assets.splashLogo),
             ),
           ),
           SizedBox(
