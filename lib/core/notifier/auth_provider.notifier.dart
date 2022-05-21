@@ -38,7 +38,7 @@ class AuthProviderNotifier extends ChangeNotifier {
   /* 
   * login
   */
-  Future<bool> login(BuildContext context, AuthModel user) async {
+  Future<bool> login(AuthModel user) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(

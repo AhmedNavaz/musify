@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/notifier/connection.notifier.dart';
@@ -14,6 +15,9 @@ class MultiProviders extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<ConnectionNotifier>(
           create: (BuildContext context) => ConnectionNotifier(),
+        ),
+        ChangeNotifierProvider<AuthProviderNotifier>(
+          create: (BuildContext context) => AuthProviderNotifier(),
         ),
       ],
       child: child,

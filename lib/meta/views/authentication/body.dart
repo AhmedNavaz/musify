@@ -105,7 +105,9 @@ class SignBody extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              navigationController.navigateToNamed(RouteGenerator.loginScreen);
+            },
             child: Container(
               width: double.infinity,
               alignment: Alignment.center,

@@ -3,11 +3,51 @@ import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
+import 'package:provider/provider.dart';
 
-class SigninView extends StatelessWidget {
+import '../../../app/constants/strings.constant.dart';
+import '../../../core/model/auth_model.dart';
+import '../../../core/notifier/auth_provider.notifier.dart';
+
+class SigninView extends StatefulWidget {
   SigninView({Key? key}) : super(key: key);
 
+  @override
+  State<SigninView> createState() => _SigninViewState();
+}
+
+class _SigninViewState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
+  bool pressed = false;
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void _trySubmit() async {
+    final isValid = _formKey.currentState!.validate();
+    FocusScope.of(context).unfocus();
+
+    if (isValid) {
+      // TODO :: REQUEST CALL
+
+      setState(() {
+        pressed = true;
+      });
+
+      bool success = await context.read<AuthProviderNotifier>().login(AuthModel(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim()));
+
+      if (success) {
+        // navigationController.getOffAll(RouteGenerator.homePageRoot);
+        print("TRUE");
+      }
+
+      setState(() {
+        pressed = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,21 +87,27 @@ class SigninView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(children: [
                   TextFormField(
+                    controller: emailController,
                     decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       labelText: 'Email',
                       labelStyle: TextStyle(color: AppTheme.primaryColor),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter some text';
+                    validator: (str) {
+                      if (str == '' || str == null) {
+                        return "Required*";
+                      }
+
+                      if (!emailValidate.hasMatch(str)) {
+                        return "Invalid email address";
                       }
                       return null;
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   TextFormField(
+                    controller: passwordController,
                     decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -77,18 +123,16 @@ class SigninView extends StatelessWidget {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // If the form is valid, display a Snackbar.
-                      }
-                    },
+                    onPressed: pressed ? () => null : _trySubmit,
+                    style: ElevatedButton.styleFrom(
+                        primary: pressed
+                            ? AppTheme.lightBackgroundColor
+                            : AppTheme.primaryColor,
+                        minimumSize: const Size(400, 50)),
                     child: Text(
                       'Sign In',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    style: ElevatedButton.styleFrom(
-                        primary: AppTheme.primaryColor,
-                        minimumSize: Size(400, 50)),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Text("Forgot your password?",
