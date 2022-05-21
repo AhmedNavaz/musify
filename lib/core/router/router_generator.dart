@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musify/meta/views/splash/splash_screen.dart';
 
 class RouteGenerator {
   // TODO : ROUTES GENERATOR CLASS THAT CONTROLS THE FLOW OF NAVIGATION/ROUTING
@@ -26,7 +27,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case splashScreen:
-
+        return _getPageRoute(const SplashScreen());
       default:
         return _errorRoute();
     }

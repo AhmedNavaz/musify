@@ -52,7 +52,6 @@ class AppTheme {
 
   static const Color unSelectedNavBarItemColor = Color(0xFF9A9B9B);
 
-
   static LinearGradient homeServiceLinearGradient = const LinearGradient(
     colors: [
       Color(0xFF93D2FF),
@@ -64,7 +63,7 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     return ThemeData(
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: GoogleFonts.openSans().fontFamily,
       primaryColor: lightBackgroundColor,
       backgroundColor: lightBackgroundColor,
       scaffoldBackgroundColor: lightBackgroundColor,
@@ -106,9 +105,7 @@ class AppTheme {
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: bottomNavBarBackground,
-        elevation: 3
-      ),
+          backgroundColor: bottomNavBarBackground, elevation: 3),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(
           color: hintColor,
@@ -125,17 +122,19 @@ class AppTheme {
           // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           primary: whiteColor,
           shape: RoundedRectangleBorder(
-            //to set border radius to button
+              //to set border radius to button
               borderRadius: BorderRadius.circular(30)),
         ),
       ),
       textSelectionTheme:
-      const TextSelectionThemeData(cursorColor: primaryColor), colorScheme: ColorScheme.fromSwatch()
-        .copyWith(
-      secondary: const Color(0xFF79A6DC),
-      brightness: Brightness.light,
-    )
-        .copyWith(secondary: primaryColor).copyWith(secondary: primaryColor),
+          const TextSelectionThemeData(cursorColor: primaryColor),
+      colorScheme: ColorScheme.fromSwatch()
+          .copyWith(
+            secondary: const Color(0xFF79A6DC),
+            brightness: Brightness.light,
+          )
+          .copyWith(secondary: primaryColor)
+          .copyWith(secondary: primaryColor),
     );
   }
 
