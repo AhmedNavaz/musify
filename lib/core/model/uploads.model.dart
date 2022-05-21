@@ -17,10 +17,9 @@ class UploadsModel {
       this.songs});
 
   UploadsModel.fromDocumentSnapshot(Map<String, dynamic> json) {
-    print(json);
-    // uploadId = json.id ;
-    // artistUid = json['artistUid'];
-    // artistName = json['artistName'];
+    // uploadId = json[] ;
+    artistUid = json['artistUid'];
+    artistName = json['artistName'];
     // json['playlists'].forEach((e) {
     //   playlists!.add(PlaylistsModel.fromDocumentSnapshot(e));
     // });

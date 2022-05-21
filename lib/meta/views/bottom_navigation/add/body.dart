@@ -73,7 +73,7 @@ class _AddViewState extends State<AddView> {
               Expanded(
                 child: Consumer<AuthProviderNotifier>(
                     builder: (ctx, notifier, child) {
-                  if (notifier.currentUser.uploads?.playlists == null) {
+                  if (notifier.currentUser.playlists == null) {
                     return Center(
                       child: Text(
                         "No Playlist Found",
@@ -92,7 +92,7 @@ class _AddViewState extends State<AddView> {
                               childAspectRatio: 1 / 1.5,
                               mainAxisSpacing: 0),
                       itemCount:
-                          notifier.currentUser.uploads?.playlists?.length ?? 0,
+                          notifier.currentUser.playlists?.length ?? 0,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {

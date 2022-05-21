@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:musify/app/constants/controller.constant.dart';
 import 'package:musify/core/model/playlist.model.dart';
+import 'package:musify/core/model/songs.model.dart';
 import 'package:musify/core/model/uploads.model.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/hive_database.dart';
@@ -76,7 +77,6 @@ class AuthProviderNotifier extends ChangeNotifier {
       "email": user.email?.trim(),
       "avatar": user.avatar ?? '',
       "gender": user.gender,
-      "uploads": user.uploads?.toJson(),
       'likedPlaylists' : [],
       'likedSongs' : [],
       "createdAt": Timestamp.now(),
@@ -125,7 +125,7 @@ class AuthProviderNotifier extends ChangeNotifier {
     test.forEach((element) {
       element.docs.forEach((element) {
         print(element.data());
-        allArtists.add(AuthModel.fromDocumentSnapshot(element));
+        // allArtists.add(AuthModel.fromDocumentSnapshot(element));
       });
     });
   }
@@ -173,9 +173,8 @@ class AuthProviderNotifier extends ChangeNotifier {
         email: _auth.currentUser!.email,
         avatar: _auth.currentUser!.photoURL,
         gender: '',
-        uploads: UploadsModel(uploadId: "", artistName: "", artistUid: "", playlists: [], songs: []),
-        likedPlaylists: [],
-        likedSongs: [],
+        playlists: [],
+        songs: [],
         createdAt: Timestamp.now(),
 
       );
@@ -252,8 +251,8 @@ class AuthProviderNotifier extends ChangeNotifier {
       required String songName,
       required String songGenre,
       required String description,
-      File? songFile}) async {
-    if (!playlistSelected) {
+      required File songFile}) async {
+    if (playlistSelected) {
       String uid = HiveDatabase.getValue(HiveDatabase.authUid);
       Reference ref = FirebaseStorage.instance
           .ref()
@@ -265,15 +264,43 @@ class AuthProviderNotifier extends ChangeNotifier {
       await uploadTask.whenComplete(() async {
         await ref.getDownloadURL().then((value) async {
           var map = {
-            "avatar": value,
+            "artistName": currentUser.username,
+            "artistUid": currentUser.uid,
+            'playlists': FieldValue.arrayUnion([PlaylistsModel(name: playListName, description: playlistDescription, imagePath: value).toJson()])
           };
 
           await FirebaseFirestore.instance
               .collection("artists")
               .doc(uid)
               .update(map);
-          CustomSnackBar.showSuccessSnackBar(
-              title: "Avatar updated", message: '');
+
+
+          Reference songRef = FirebaseStorage.instance
+              .ref()
+              .child('artists')
+              .child(uid)
+              .child('uploads')
+              .child(songName);
+
+          UploadTask songUploadTask = songRef.putFile(songFile);
+          await songUploadTask.whenComplete(() async {
+            await songRef.getDownloadURL().then((value) async {
+
+              var map = {
+                "artistName": currentUser.username,
+                "artistUid": currentUser.uid,
+                'songs': FieldValue.arrayUnion([SongsModel(songName: songName, songGenre: songGenre, songUrl: value).toJson()])
+              };
+
+              await FirebaseFirestore.instance
+                  .collection("artists")
+                  .doc(uid)
+                  .update(map);
+
+              navigationController.getOffAll(RouteGenerator.homeScreen);
+            });
+          });
+
         });
       });
     }

@@ -16,8 +16,8 @@ class SongsModel {
       this.songName,
       this.songDescription});
 
-  SongsModel.fromDocumentSnapshot(DocumentSnapshot json) {
-    songId = json.id;
+  SongsModel.fromDocumentSnapshot(dynamic json) {
+    // songId = json.id;
     songTitle = json['songTitle'];
     songGenre = json['songGenre'];
     songUrl = json['songUrl'];

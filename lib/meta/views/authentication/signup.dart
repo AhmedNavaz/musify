@@ -47,7 +47,7 @@ class _SignupViewState extends State<SignupView> {
         pressed = true;
       });
 
-      bool success = await context.read<AuthProviderNotifier>().signup(AuthModel(username: nameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim(), gender: _selectedGender, uploads: UploadsModel(uploadId: "", artistName: "", artistUid: "", playlists: [], songs: [])));
+      bool success = await context.read<AuthProviderNotifier>().signup(AuthModel(username: nameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim(), gender: _selectedGender, playlists: [], songs: []));
 
       if(success){
         navigationController.getOffAll(RouteGenerator.home);

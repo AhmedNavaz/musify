@@ -98,14 +98,7 @@ class _UploadMusicState extends State<UploadMusic> {
                 ),
           onTap: () {
             _openFileExplorer();
-            context.read<AuthProviderNotifier>().createPlayListAndSong(
-                widget.isFromPlaylist,
-                playlistId: widget.playlistId ?? '',
-                playListName: widget.playlistName,
-                playlistDescription: widget.playlistDescription,
-                songName: title.text.trim(),
-                songGenre: genre.text.trim(),
-                description: desc.text.trim());
+
           },
         ),
         SizedBox(
@@ -156,7 +149,17 @@ class _UploadMusicState extends State<UploadMusic> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<AuthProviderNotifier>().createPlayListAndSong(
+                    widget.isFromPlaylist,
+                    playListFile: widget.playlistFile,
+                    playlistId: widget.playlistId ?? '',
+                    playListName: widget.playlistName,
+                    playlistDescription: widget.playlistDescription,
+                    songName: title.text.trim(),
+                    songGenre: genre.text.trim(),
+                    description: desc.text.trim(), songFile: File("${_path?.path}"));
+              },
               child: Text("Upload"),
               style: ElevatedButton.styleFrom(
                   padding:

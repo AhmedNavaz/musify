@@ -11,9 +11,8 @@ class AuthModel {
   String? gender;
   String? avatar;
   Timestamp? createdAt;
-  UploadsModel? uploads;
-  List<PlaylistsModel>? likedPlaylists;
-  List<SongsModel>? likedSongs;
+  List<PlaylistsModel>? playlists = <PlaylistsModel>[];
+  List<SongsModel>? songs = <SongsModel>[];
 
   AuthModel({
     this.uid,
@@ -23,9 +22,8 @@ class AuthModel {
     this.gender,
     this.avatar,
     this.createdAt,
-    this.uploads,
-    this.likedPlaylists,
-    this.likedSongs,
+    this.playlists,
+    this.songs,
   });
 
   AuthModel.fromDocumentSnapshot(DocumentSnapshot doc) {
@@ -35,14 +33,13 @@ class AuthModel {
     email = doc['email'];
     avatar = doc['avatar'];
     createdAt = doc['createdAt'];
-    uploads = UploadsModel.fromDocumentSnapshot(doc['uploads']);
-    doc['likedPlaylists'].forEach((e){
-      likedPlaylists!.add(PlaylistsModel.fromDocumentSnapshot(e));
+     doc['playlists'].forEach((e){
+       playlists!.add(PlaylistsModel.fromDocumentSnapshot(e));
     });
-    doc['likedSongs'].forEach((e){
-      likedSongs!.add(SongsModel.fromDocumentSnapshot(e));
-    });
-  }
+    doc['songs'].forEach((e){
+      songs!.add(SongsModel.fromDocumentSnapshot(e));
+    })
+;  }
 
 
   Map<String, dynamic> toJson() => {
@@ -51,9 +48,8 @@ class AuthModel {
     'gender': gender,
     'avatar': avatar,
     'createdAt': createdAt,
-    'uploads': uploads,
-    'likedPlaylists': likedPlaylists!.map((e) => e.toJson()).toList(),
-    'likedSongs': likedSongs!.map((e) => e.toJson()).toList(),
+    'playlists': playlists!.map((e) => e.toJson()).toList(),
+    'songs': songs!.map((e) => e.toJson()).toList(),
   };
 
 }

@@ -9,8 +9,8 @@ class PlaylistsModel {
   PlaylistsModel(
       {this.name, this.playlistId, this.description, this.imagePath});
 
-  PlaylistsModel.fromDocumentSnapshot(DocumentSnapshot json) {
-    playlistId = json.id;
+  PlaylistsModel.fromDocumentSnapshot(dynamic json) {
+    // playlistId = json.id;
     name = json['name'];
     description = json['description'];
     imagePath = json['imagePath'];
