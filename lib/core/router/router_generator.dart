@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musify/meta/views/authentication/body.dart';
 import 'package:musify/meta/views/authentication/signin.dart';
 import 'package:musify/meta/views/authentication/signup.dart';
+import 'package:musify/meta/views/bottom_navigation/body.dart';
 import 'package:musify/meta/views/splash/splash_screen.dart';
 
 class RouteGenerator {
@@ -14,6 +15,7 @@ class RouteGenerator {
   static const String welcomeScreen = '/welcome-screen';
   static const String loginScreen = '/login-screen';
   static const String signupScreen = '/signup-screen';
+  static const String home = '/home';
   static const String forgotPasswordScreen = '/forgot-password-screen';
   static const String enterPhoneNumberScreen = '/enter-phone-number-screen';
   static const String createNewPassword = '/create-new-password-screen';
@@ -40,6 +42,9 @@ class RouteGenerator {
 
       case loginScreen:
         return _getPageRoute(SigninView());
+
+      case home:
+        return _getPageRoute(const NavBody());
 
       default:
         return _errorRoute();
