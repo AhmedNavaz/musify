@@ -49,7 +49,7 @@ class _SignupViewState extends State<SignupView> {
       bool success = await context.read<AuthProviderNotifier>().signup(AuthModel(username: nameController.text.trim(), email: emailController.text.trim(), password: passwordController.text.trim(), gender: _selectedGender));
 
       if(success){
-        // navigationController.getOffAll(RouteGenerator.homePageRoot);
+        navigationController.getOffAll(RouteGenerator.home);
       }
 
       setState(() {

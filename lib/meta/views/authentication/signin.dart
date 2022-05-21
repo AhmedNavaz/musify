@@ -41,7 +41,7 @@ class _SigninViewState extends State<SigninView> {
           password: passwordController.text.trim()));
 
       if (success) {
-        // navigationController.getOffAll(RouteGenerator.homePageRoot);
+        navigationController.getOffAll(RouteGenerator.home);
         CustomSnackBar.showSuccessSnackBar(title: 'Login Successful', message: "");
         print("TRUE");
       }

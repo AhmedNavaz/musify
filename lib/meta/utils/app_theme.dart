@@ -67,7 +67,7 @@ class AppTheme {
       primaryColor: lightBackgroundColor,
       backgroundColor: darkBackgroundColor,
       scaffoldBackgroundColor: darkBackgroundColor,
-      primaryColorLight: const Color(0xFFF1F1F1),
+      primaryColorLight: darkBackgroundColor,
       splashColor: splashColor,
       brightness: Brightness.light,
       errorColor: errorColor,

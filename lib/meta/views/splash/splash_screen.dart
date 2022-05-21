@@ -2,8 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:musify/app/constants/assets.constant.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/core/notifier/connection.notifier.dart';
 import 'package:provider/provider.dart';
+import '../../../app/constants/controller.constant.dart';
+import '../../../core/router/router_generator.dart';
+import '../../utils/hive_database.dart';
 import '../../utils/shared_pref.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,12 +29,13 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO :: CHECK USER STATE HERE
 
     // LOGGED IN ? HOME PAGE : AUTH SCREEN
-    // if(HiveDatabase.getValue(HiveDatabase.loginCheck) == true){
-    //   navigationController.getOffAll(RouteGenerator.homePageRoot);
-    //   context.read<AuthenticationNotifier>().loadUserProfile();
-    // }else{
-    //   navigationController.getOffAll(RouteGenerator.welcomeScreen);
-    // }
+    print(HiveDatabase.getValue(HiveDatabase.authUid));
+    if(HiveDatabase.getValue(HiveDatabase.loginCheck) == true){
+      navigationController.getOffAll(RouteGenerator.home);
+      context.read<AuthProviderNotifier>().getUser(HiveDatabase.getValue(HiveDatabase.authUid));
+    }else{
+      navigationController.getOffAll(RouteGenerator.welcomeScreen);
+    }
   }
 
   @override

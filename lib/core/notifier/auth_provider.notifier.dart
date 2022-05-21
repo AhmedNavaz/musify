@@ -74,6 +74,7 @@ class AuthProviderNotifier extends ChangeNotifier {
       "createdAt": Timestamp.now(),
     };
     await FirebaseFirestore.instance.collection("artists").doc(uid).set(map);
+
     CustomSnackBar.showSuccessSnackBar(
         title: "Account registered successfully!", message: "");
 
@@ -102,6 +103,7 @@ class AuthProviderNotifier extends ChangeNotifier {
         );
       }
       currentUser = AuthModel.fromDocumentSnapshot(doc);
+      print(currentUser);
       return currentUser;
     } catch (e) {
       debugPrint(e.toString());
@@ -130,8 +132,8 @@ class AuthProviderNotifier extends ChangeNotifier {
           });
         }
       }
+      navigationController.getOffAll(RouteGenerator.home);
 
-      saveUidToHive(currentUser.uid ?? "");
     });
   }
 
@@ -147,6 +149,7 @@ class AuthProviderNotifier extends ChangeNotifier {
         idToken: googleAuth.idToken,
       );
       _auth.signInWithCredential(credential).then((value) {
+        saveUidToHive(value.user?.uid ?? "");
         createUserWithSocial();
       });
       // isLoading = false;
@@ -187,7 +190,7 @@ class AuthProviderNotifier extends ChangeNotifier {
   /*
   * Update Avatar
   */
-  void updateAvatar(context, file) async {
+  void updateAvatar(file) async {
     String uid = HiveDatabase.getValue(HiveDatabase.authUid);
     CustomSnackBar.showSuccessSnackBar(title: "Starting Upload", message: '');
     Reference ref = FirebaseStorage.instance.ref().child("images").child(uid).child("avatar");
