@@ -4,8 +4,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/core/notifier/auth_provider.notifier.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class SignBody extends StatelessWidget {
   const SignBody({Key? key}) : super(key: key);
@@ -43,7 +45,9 @@ class SignBody extends StatelessWidget {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.03),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.read<AuthProviderNotifier>().loginWithFacebook();
+            },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -74,7 +78,9 @@ class SignBody extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.read<AuthProviderNotifier>().loginWithGoogle();
+            },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -106,7 +112,7 @@ class SignBody extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              navigationController.navigateToNamed(RouteGenerator.loginScreen);
+              navigationController.navigateToNamed(RouteGenerator.signupScreen);
             },
             child: Container(
               width: double.infinity,

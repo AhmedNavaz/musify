@@ -24,7 +24,6 @@ class AuthModel {
     username = doc['username'];
     gender = doc['gender'];
     email = doc['email'];
-    password = doc['password'];
     avatar = doc['avatar'];
     createdAt = doc['createdAt'];
   }

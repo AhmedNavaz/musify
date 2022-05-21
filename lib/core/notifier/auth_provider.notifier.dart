@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/core/router/router_generator.dart';
+import 'package:musify/meta/utils/hive_database.dart';
 import '../../components/custom_snackbar.dart';
 import '../model/auth_model.dart';
 
@@ -18,14 +22,16 @@ class AuthProviderNotifier extends ChangeNotifier {
   /* 
   * sign up
   */
-  Future<bool> signup(BuildContext context, AuthModel user) async {
+  Future<bool> signup(AuthModel user) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
               email: user.email!, password: user.password!);
       if (userCredential.user != null) {
         var uid = userCredential.user?.uid;
-        await writeUserToDatabase(uid, user);
+        if(await writeUserToDatabase(uid, user)){
+          // navigationController.getOffAll(RouteGenerator);
+        }
       }
       return true;
     } on FirebaseAuthException catch (e) {
@@ -46,6 +52,7 @@ class AuthProviderNotifier extends ChangeNotifier {
 
       if (userCredential.user != null) {
         var uid = userCredential.user?.uid;
+        saveUidToHive(uid ?? "");
         await getUser(uid ?? "");
         return true;
       }
@@ -59,16 +66,18 @@ class AuthProviderNotifier extends ChangeNotifier {
 
   Future<bool> writeUserToDatabase(uid, AuthModel user) async {
     var map = {
-      "id": uid,
+      "uid": uid,
       "username": user.username?.trim(),
       "email": user.email?.trim(),
       "avatar": user.avatar ?? '',
       "gender": user.gender,
-      "timestamp": Timestamp.now(),
+      "createdAt": Timestamp.now(),
     };
     await FirebaseFirestore.instance.collection("artists").doc(uid).set(map);
     CustomSnackBar.showSuccessSnackBar(
         title: "Account registered successfully!", message: "");
+
+    saveUidToHive(uid ?? "");
     return true;
   }
 
@@ -92,7 +101,8 @@ class AuthProviderNotifier extends ChangeNotifier {
           message: '',
         );
       }
-      return AuthModel.fromDocumentSnapshot(doc);
+      currentUser = AuthModel.fromDocumentSnapshot(doc);
+      return currentUser;
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
@@ -120,6 +130,8 @@ class AuthProviderNotifier extends ChangeNotifier {
           });
         }
       }
+
+      saveUidToHive(currentUser.uid ?? "");
     });
   }
 
@@ -170,5 +182,44 @@ class AuthProviderNotifier extends ChangeNotifier {
               title: "Error login Account", message: "");
         }
     }
+  }
+
+  /*
+  * Update Avatar
+  */
+  void updateAvatar(context, file) async {
+    String uid = HiveDatabase.getValue(HiveDatabase.authUid);
+    CustomSnackBar.showSuccessSnackBar(title: "Starting Upload", message: '');
+    Reference ref = FirebaseStorage.instance.ref().child("images").child(uid).child("avatar");
+
+    UploadTask uploadTask = ref.putFile(file);
+    await uploadTask.whenComplete(() async {
+      await ref.getDownloadURL().then((value) async {
+        var map = {
+          "avatar": value,
+        };
+
+        await FirebaseFirestore.instance.collection("artists").doc(uid).update(map);
+        CustomSnackBar.showSuccessSnackBar(title: "Avatar updated", message: '');
+      });
+    });
+  }
+
+  /*
+  * Logout
+  */
+  Future logout(context) async {
+    await FirebaseAuth.instance.signOut();
+    await googleSignIn.signOut();
+    await facebookLogin.logOut();
+    // await AppPref().setLoggedIn(false);
+    HiveDatabase.storeValue(HiveDatabase.loginCheck, false);
+    navigationController.getOffAll(RouteGenerator.welcomeScreen);
+  }
+
+
+  void saveUidToHive(String uid){
+    HiveDatabase.storeValue(HiveDatabase.loginCheck, true);
+    HiveDatabase.storeValue(HiveDatabase.authUid, uid);
   }
 }

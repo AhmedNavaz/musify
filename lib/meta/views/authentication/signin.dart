@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musify/app/constants/assets.constant.dart';
 import 'package:musify/app/constants/controller.constant.dart';
+import 'package:musify/components/custom_snackbar.dart';
 import 'package:musify/core/router/router_generator.dart';
 import 'package:musify/meta/utils/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class _SigninViewState extends State<SigninView> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool passShow = false;
 
   void _trySubmit() async {
     final isValid = _formKey.currentState!.validate();
@@ -40,6 +42,7 @@ class _SigninViewState extends State<SigninView> {
 
       if (success) {
         // navigationController.getOffAll(RouteGenerator.homePageRoot);
+        CustomSnackBar.showSuccessSnackBar(title: 'Login Successful', message: "");
         print("TRUE");
       }
 
@@ -108,15 +111,24 @@ class _SigninViewState extends State<SigninView> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   TextFormField(
                     controller: passwordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       labelText: 'Password',
-                      labelStyle: TextStyle(color: AppTheme.primaryColor),
+                      suffix: GestureDetector(onTap: (){
+                        setState(() {
+                          passShow = !passShow;
+                        });
+                      },child: Text( passShow ? "Hide" : "Show", style: Theme.of(context).textTheme.bodyText1?.copyWith(color: AppTheme.primaryColor),)),
+                      labelStyle: const TextStyle(color: AppTheme.primaryColor),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter some text';
+                    obscureText: !passShow,
+                    validator: (str) {
+                      if (str == '' || str == null) {
+                        return "Required*";
+                      }
+                      if (str.length <= 6) {
+                        return "Password should be at least 6 characters";
                       }
                       return null;
                     },
